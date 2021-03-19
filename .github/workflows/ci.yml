@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Copy the env.test file
+        working-directory: symfony
+        run: |
+          mv ".env.test.dist" ".env"
+          
+      - name: Install Composer
+        working-directory: symfony
+        run: |
+          composer install --no-scripts --no-interaction
+          
+      - name: Run PHP-CS-Fixer
+        uses: docker://jakzal/phpqa:php7.4-alpine
+        with:
+          args: php-cs-fixer --dry-run --allow-risky=yes --no-interaction --ansi fix symfony/src
