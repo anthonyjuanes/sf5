@@ -14,11 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Copy the env.test file
-      working-directory: symfony
-      run: |
-        mv ".env.test.dist" ".env"
-
     - name: Install Composer
       working-directory: symfony
       run: |
